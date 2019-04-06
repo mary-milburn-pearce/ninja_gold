@@ -1,0 +1,125 @@
+<html>
+<head>
+    <title>Ninja Gold</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <header>
+      <main role="main">
+  
+        <section class="container-fluid">
+          <div class="row">
+            <div class="col-md-3 sub-form">
+              <h4>Your Gold: </h4>
+              <input type="text" class="form-control" name="gold-amt" value="{{ session['gold'] }}" readonly>
+            </div>
+            <div class="col-md-3 sub-form">
+              <h4>Tries Remaining: </h4>
+              <input type="text" class="form-control" name="tries-left" value="{{ session['tries-left'] }}" readonly>
+            </div>
+            <div class="col-md-6 sub-form">
+                <h4>Game Over!</h4>
+                <h3>{{session['win-status']}}</h3>
+            </div>
+          </div>
+        </section>
+
+        <section class="container-fluid">
+          <div class="row">
+            <div class="col-md-3 sub-form">
+              <form action='/process' method='post'>
+                <div class="col-md-6 mb-3">
+                    <input type="hidden" class="form-control" name="source" value="farm">
+                </div>
+                <div class="mb-3">
+                  <h3>Farm</h3>
+                  <label for="source">(earns 10-20 golds)</label>
+                </div>             
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+              </form>
+            </div>
+
+            <div class="col-md-3 sub-form">
+              <form action='/process' method='post'>
+                <div class="col-md-6 mb-3">
+                    <input type="hidden" class="form-control" name="source" value="cave">
+                </div>
+                <div class="mb-3">
+                  <h3>Cave</h3>
+                  <label for="source">(earns 5-10 golds)</label>
+                </div>             
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+              </form>
+            </div>
+
+            <div class="col-md-3 sub-form">
+              <form action='/process' method='post'>
+                <div class="col-md-6 mb-3">
+                    <input type="hidden" class="form-control" name="source" value="house">
+                </div>
+                <div class="mb-3">
+                  <h3>House</h3>
+                  <label for="source">(earns 2-5 golds)</label>
+                </div>             
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+              </form>
+            </div>
+
+            <div class="col-md-3 sub-form">
+              <form action='/process' method='post'>
+                <div class="col-md-6 mb-3">
+                    <input type="hidden" class="form-control" name="source" value="casino">
+                </div>
+                <div class="mb-3">
+                  <h3>Casino</h3>
+                  <label for="source">(earns/takes 0-50 golds)</label>
+                </div>             
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="container-fluid">
+          <div class="form-group">
+            <h4>  Activities:</h4>
+            <div class="activities">
+              {% for a in session['activities'] | reverse: %}
+                <p style="color: {{ a['color'] }}">{{ a['message'] }}</p>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
+        <section class="container-fluid">
+            {% if session['win-status']=='Won' or session['win-status']=='Lost' %}                
+            <div class="form-group">
+              <form action='/reset' method='post'>
+                <h5>Win Criteria: </h5>
+                <div class="col-md-3">
+                  <label for="win-points">Points</label>
+                  <input type="number" class="form-control" name="win-points" value="{{session['win-points']}}">
+                </div>
+                <div class="col-md-3">
+                  <label for="win-tries">in Number of Tries:</label>
+                  <input type="number" class="form-control" name="win-tries" value="{{session['win-tries']}}>
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btn-primary btn-md btn-block" type="submit">Reset Game</button>
+                </div>
+              </form>
+            </div>
+            {% endif %}
+          </section>
+      
+  
+      </main>
+</body>
+</html>
+

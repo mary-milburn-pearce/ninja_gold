@@ -1,0 +1,18 @@
+.sub-form {
+    border: 2px solid black;
+    text-align: center;
+}
+.activities {
+    width: auto;
+    height: 217px;
+    border: 2px solid #000000;
+    border-style: inset;
+    overflow: scroll;
+}
+p {
+    margin: 0px;
+}
+.win-criteria-section {
+    display: inline-block;
+    vertical-align: top;
+}
