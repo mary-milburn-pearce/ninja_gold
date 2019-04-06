@@ -11,30 +11,28 @@ def index():
         return redirect('/reset')
     return render_template("index.html")
 
+
+gold_dict = {
+    'farm' : {'min_amt' : 10, 'max_amt' : 20},
+    'cave' : {'min_amt' : 5, 'max_amt' : 10},
+    'house' : {'min_amt' : 2, 'max_amt' : 5},
+    'casino' : {'min_amt' : -50, 'max_amt' : 50}
+}
+
 @app.route('/process', methods=['POST'])         
 def process_money():
-    message_color='green'
-    if request.form['source']=='farm':
-        newVal=random.randint(10, 20)
-        actStr=f"Earned {newVal} golds from the farm " \
+    source=request.form['source']
+    min_gold=gold_dict[source]['min_amt']
+    max_gold=gold_dict[source]['max_amt']
+    newVal=random.randint(min_gold, max_gold)
+    if newVal >= 0:
+        message_color='green'
+        actStr=f"Earned {newVal} golds from the {source} " \
             + datetime.datetime.now().strftime("%B %d, %Y %I:%M:%S %p")
-    elif request.form['source']=='cave':
-        newVal=random.randint(5, 10)
-        actStr=f"Earned {newVal} golds from the cave " \
+    else:
+        message_color='red'
+        actStr=f"Lost {(0-newVal)} golds to the {source} " \
             + datetime.datetime.now().strftime("%B %d, %Y %I:%M:%S %p")
-    elif request.form['source']=='house':
-        newVal=random.randint(2, 5)
-        actStr=f"Earned {newVal} golds from the house " \
-            + datetime.datetime.now().strftime("%B %d, %Y %I:%M:%S %p")
-    elif request.form['source']=='casino':
-        newVal=random.randint(-50, 50)
-        if newVal >= 0:
-            actStr=f"Earned {newVal} golds from the casino " \
-                + datetime.datetime.now().strftime("%B %d, %Y %I:%M:%S %p")
-        else:
-            message_color='red'
-            actStr=f"Lost {(0-newVal)} golds to the casino " \
-                + datetime.datetime.now().strftime("%B %d, %Y %I:%M:%S %p")
     session['gold']+=newVal
     session['tries-left']=int(session['tries-left'])-1
     session['activities'].append( {'color' : message_color, 'message' : actStr} )
