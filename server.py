@@ -7,6 +7,8 @@ app.secret_key = 'opus'
 
 @app.route('/')         
 def index():
+    if 'gold' not in session:
+        return redirect('/reset')
     return render_template("index.html")
 
 @app.route('/process', methods=['POST'])         
@@ -34,24 +36,24 @@ def process_money():
             actStr=f"Lost {(0-newVal)} golds to the casino " \
                 + datetime.datetime.now().strftime("%B %d, %Y %I:%M:%S %p")
     session['gold']+=newVal
+    session['tries-left']=int(session['tries-left'])-1
     session['activities'].append( {'color' : message_color, 'message' : actStr} )
     if session['gold']>=session['win-points']:
         session['win-status']='Won'
-    elif session['tries-left']==0:
+    elif session['tries-left']<=0:
         session['win-status']='Lost'
     else:
-        session['tries-left']=int(session['tries-left'])-1
         session['win-status']=''
     return redirect('/')
 
 @app.route('/reset', methods=['POST', 'GET'])
 def process_reset():
     print(request.form)
-    if request.form['win-points']=="":
+    if request.method=='GET' or request.form['win-points']=="":
         win_points=DEFAULT_GOLDS_TO_WIN
     else:
         win_points=int(request.form['win-points'])
-    if request.form['win-tries']=="":
+    if request.method=='GET' or request.form['win-tries']=="":
         win_tries=DEFAULT_TRIES_TO_WIN
     else:
         win_tries=int(request.form['win-tries'])

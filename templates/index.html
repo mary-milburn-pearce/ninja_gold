@@ -19,7 +19,6 @@
               <h4>Tries Left: </h4>
               <input type="text" class="form-control" name="tries-left" value="{{ session['tries-left'] }}" readonly>
             </div>
-            <!-- <div class="col-md-6 sub-form"> -->
               {% if session['win-status']=='Won' %}
                 <div class="col-md-3 sub-section-ctr">
                     <h2>You Won!</h2>
@@ -37,7 +36,6 @@
                   <img src="static/img/sad_face.jpg" alt="Sad Face" class="img-responsive">
                 </div>
               {% endif %}
-            <!-- </div> -->
           </div>
         </section>
 
