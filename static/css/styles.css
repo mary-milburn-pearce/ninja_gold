@@ -1,6 +1,10 @@
 .sub-form {
-    border: 2px solid black;
+    border: 1px solid black;
     text-align: center;
+}
+.sub-section-ctr {
+    text-align: center;
+    margin: auto;
 }
 .activities {
     width: auto;
@@ -16,3 +20,16 @@ p {
     display: inline-block;
     vertical-align: top;
 }
+/* css animation code */
+@keyframes flash-img {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  img {
+      height: 70px;
+      width: 280px;
+      margin: 5px;
+      animation-name: flash-img;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+  }

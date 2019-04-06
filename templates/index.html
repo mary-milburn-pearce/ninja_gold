@@ -11,18 +11,33 @@
   
         <section class="container-fluid">
           <div class="row">
-            <div class="col-md-3 sub-form">
+            <div class="col-md-3 sub-section">
               <h4>Your Gold: </h4>
               <input type="text" class="form-control" name="gold-amt" value="{{ session['gold'] }}" readonly>
             </div>
-            <div class="col-md-3 sub-form">
-              <h4>Tries Remaining: </h4>
+            <div class="col-md-3 sub-section">
+              <h4>Tries Left: </h4>
               <input type="text" class="form-control" name="tries-left" value="{{ session['tries-left'] }}" readonly>
             </div>
-            <div class="col-md-6 sub-form">
-                <h4>Game Over!</h4>
-                <h3>{{session['win-status']}}</h3>
-            </div>
+            <!-- <div class="col-md-6 sub-form"> -->
+              {% if session['win-status']=='Won' %}
+                <div class="col-md-3 sub-section-ctr">
+                    <h2>You Won!</h2>
+                    <h5>(Scroll down to start again)</h5>
+                </div>
+                <div div class="col-md-3 sub-section-ctr">
+                  <img src="static/img/gold_coins.jpg" alt="Gold" class="img-responsive">
+                </div>
+              {% elif session['win-status']=='Lost' %} 
+                <div class="col-md-3 sub-section-ctr">
+                    <h2>You Lost!</h2>
+                    <h5>(Scroll down to start again)</h5>
+                </div>
+                <div div class="col-md-3 sub-section-ctr">
+                  <img src="static/img/sad_face.jpg" alt="Sad Face" class="img-responsive">
+                </div>
+              {% endif %}
+            <!-- </div> -->
           </div>
         </section>
 
@@ -38,8 +53,12 @@
                   <label for="source">(earns 10-20 golds)</label>
                 </div>             
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
-              </form>
+                {% if session['win-status'] | length %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit" disabled>Find Gold!</button>
+                {% else %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+                {% endif %}
+                </form>
             </div>
 
             <div class="col-md-3 sub-form">
@@ -52,7 +71,11 @@
                   <label for="source">(earns 5-10 golds)</label>
                 </div>             
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+                {% if session['win-status'] | length %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit" disabled>Find Gold!</button>
+                {% else %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+                {% endif %}
               </form>
             </div>
 
@@ -66,7 +89,11 @@
                   <label for="source">(earns 2-5 golds)</label>
                 </div>             
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+                {% if session['win-status'] | length %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit" disabled>Find Gold!</button>
+                {% else %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+                {% endif %}
               </form>
             </div>
 
@@ -80,7 +107,11 @@
                   <label for="source">(earns/takes 0-50 golds)</label>
                 </div>             
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+                {% if session['win-status'] | length %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit" disabled>Find Gold!</button>
+                {% else %}
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">Find Gold!</button>
+                {% endif %}
               </form>
             </div>
           </div>
@@ -98,20 +129,20 @@
         </section>
 
         <section class="container-fluid">
-            {% if session['win-status']=='Won' or session['win-status']=='Lost' %}                
+            {% if session['win-status'] | length %}                
             <div class="form-group">
               <form action='/reset' method='post'>
                 <h5>Win Criteria: </h5>
                 <div class="col-md-3">
-                  <label for="win-points">Points</label>
+                  <label for="win-points">Total Golds:</label>
                   <input type="number" class="form-control" name="win-points" value="{{session['win-points']}}">
                 </div>
                 <div class="col-md-3">
                   <label for="win-tries">in Number of Tries:</label>
-                  <input type="number" class="form-control" name="win-tries" value="{{session['win-tries']}}>
+                  <input type="number" class="form-control" name="win-tries" value="{{session['win-tries']}}">
                 </div>
                 <div class="col-md-3">
-                  <button class="btn btn-primary btn-md btn-block" type="submit">Reset Game</button>
+                  <button class="btn btn-primary btn-md btn-block" type="submit">Restart Game</button>
                 </div>
               </form>
             </div>

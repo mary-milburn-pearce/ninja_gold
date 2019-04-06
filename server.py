@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
-import datetime, random
+import datetime, random 
+from constant import DEFAULT_TRIES_TO_WIN, DEFAULT_GOLDS_TO_WIN
 
 app = Flask(__name__)  
 app.secret_key = 'opus'
@@ -10,9 +11,6 @@ def index():
 
 @app.route('/process', methods=['POST'])         
 def process_money():
-    # print(request.form)
-    # # if 'gold' not in session:
-    # #     return redirect('/reset')
     message_color='green'
     if request.form['source']=='farm':
         newVal=random.randint(10, 20)
@@ -49,12 +47,12 @@ def process_money():
 @app.route('/reset', methods=['POST', 'GET'])
 def process_reset():
     print(request.form)
-    if request.form['win-points']=='':
-        win_points=100
+    if request.form['win-points']=="":
+        win_points=DEFAULT_GOLDS_TO_WIN
     else:
         win_points=int(request.form['win-points'])
     if request.form['win-tries']=="":
-        win_tries=10
+        win_tries=DEFAULT_TRIES_TO_WIN
     else:
         win_tries=int(request.form['win-tries'])
     session.clear
